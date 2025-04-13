@@ -1,33 +1,43 @@
+<!--
+  Clean Water Game
+  A simple grid game where the user clicks to find the hidden water tile.
+  HTML contains game title, message area, grid container, and reset button.
+-->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Water Quest</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clean Water Game</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="container">
-    <h1>Water Quest</h1>
-    <p style="text-align: center;">Collect 25 items to complete the game!</p>
-    <div class="progress-container">
-      <div id="progress-bar" class="progress-bar"></div>
-      <div class="milestone" style="left: 25%" data-level="2">2</div>
-      <div class="milestone" style="left: 50%" data-level="3">3</div>
-      <div class="milestone" style="left: 75%" data-level="4">4</div>
-      <div class="milestone" style="left: 100%" data-level="5">5</div>
+  <img src="img/cw_logo.jpg" alt="Charity:Water Logo" style="display: block; margin: 0 auto; width: 150px; height: auto;"/>
+  <main>
+    <h1>Thirst No More</h1>
+    <h2>Help clean water reach the village!</h2>
+
+    <!-- Score area -->
+    <div id="score-area">
+      <p>Score: <span id="score">0</span></p>
+      <p>Rotations: <span id="rotations">0</span></p>
     </div>
-    <div class="level-indicator">Level: <span id="level">1</span></div>
-    <div class="stats">
-      <p>Items Collected: <span id="current-cans">0</span></p>
-      <p>Time Left: <span id="timer">30</span>s</p>
+    <button id="testPathBtn">Test Path</button>
+
+
+    <!-- Message area for win/loss feedback -->
+    <div id="message"></div>
+
+    <!-- Container for the tile grid -->
+    <div id="grid" class="grid"></div>
+
+    <!-- Buttons at the bottom -->
+    <div id="button-area">
+      <button id="resetBtn">Start Game</button>
+      <button id="moreInfoBtn">More Info</button>
     </div>
-    <div id="achievements" class="achievement"></div>
-    <div id="game-container" class="game-container">
-      <div class="game-grid"></div>
-    </div>
-    <button id="start-game">Start Game</button>
-  </div>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
