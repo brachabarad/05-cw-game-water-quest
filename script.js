@@ -199,6 +199,7 @@ function checkForValidPath() {
           pathMap.set(neighborIndex, currentIndex); // track the path
         }
 
+        
         // ✅ WIN CONDITION
         if (neighborIndex === goalIndex) {
           message.textContent = '✅ Water reached the goal!';

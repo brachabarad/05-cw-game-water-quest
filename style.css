@@ -55,6 +55,7 @@ h2 {
   
 }
 
+
 /* Define tile types */
 .tile[data-type="straight-h"] {
   background-image: url("img/straight-h.png");
