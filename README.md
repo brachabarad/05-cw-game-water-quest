@@ -1,4 +1,13 @@
-# Charity: water – Water Quest Game Starter
-A fast-paced, whack-a-mole-style game where players tap Charity: water's signature yellow jerry cans to earn points. 
+Clean Water Game
+  A simple grid game where the user clicks to find the hidden water tile.
+  ## How to Play
+  1. The game consists of a grid of tiles.
+  2. Click on a tile to reveal what is underneath.
+  3. The goal is to find the hidden water tile with the fewest clicks.
 
-Include a score counter, feedback messages, milestones, and optional obstacles to make it more engaging.
+  ## Features
+  - Randomized water tile placement on each game start.
+  - Simple and intuitive user interface.
+  - Tracks the number of clicks made by the player.
+
+    

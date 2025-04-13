@@ -18,8 +18,6 @@ function getConnections(type, rotation) {
     'straight-v': ['top', 'bottom'],
     'curve-tl': ['top', 'left'],
     'curve-tr': ['top', 'right'],
-    'curve-bl': ['bottom', 'left'],
-    'curve-br': ['bottom', 'right'],
     'cross': ['top', 'right', 'bottom', 'left'],
     'start': ['right', 'bottom'],
     'goal': ['top', 'right', 'bottom', 'left']
@@ -44,7 +42,7 @@ function createGrid() {
   rotations = 0;
   rotationsElement.textContent = rotations;
 
-  const tileTypes = ['straight-h', 'straight-v', 'curve-tl', 'curve-tr', 'curve-bl', 'curve-br', 'cross'];
+  const tileTypes = ['straight-h', 'straight-v', 'curve-tl', 'curve-tr', 'cross'];
   const totalTiles = 25;
   const startTileIndex = 0;
 
@@ -122,11 +120,7 @@ function createGrid() {
   document.querySelectorAll('.tile').forEach((tile, i) => {
     console.log(`Tile ${i}: ${tile.dataset.type}, rotation: ${tile.dataset.rotation}`);
   });
-}
-
-
-
-      
+}  
 
 function handleClick(tile, index) {
   if (gameOver) return;

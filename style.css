@@ -65,19 +65,11 @@ h2 {
   background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
 .tile[data-type="curve-tr"] {
-  background-image: url("img/curvetr.png");
+  background-image: url("img/curvetr.jpg");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
 .tile[data-type="curve-tl"] {
-  background-image: url("img/curvetl.png");
-  background-size: 100% 100%; /* Ensure the image fits the tile size */
-}
-.tile[data-type="curve-br"] {
-  background-image: url("img/curvebr.png");
-  background-size: 100% 100%; /* Ensure the image fits the tile size */
-}
-.tile[data-type="curve-bl"] {
-  background-image: url("img/curvebl.png");
+  background-image: url("img/curvetl.jpg");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
 .tile[data-type="cross"] {
