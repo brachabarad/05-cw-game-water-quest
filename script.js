@@ -33,8 +33,8 @@ function getConnections(type, rotation) {
   return directions.map(dir => rotateDirection[rotation][dir]);
 }
 
-//createGrid function
-function createGrid() {
+// Generate the tile grid
+function generateTiles() {
   grid.innerHTML = '';
   gameOver = false;
   message.textContent = '';
@@ -46,7 +46,6 @@ function createGrid() {
   const totalTiles = 25;
   const startTileIndex = 0;
 
-  // Helper: Manhattan distance between tile indices
   function manhattanDistance(i1, i2) {
     const x1 = i1 % 5;
     const y1 = Math.floor(i1 / 5);
@@ -55,7 +54,6 @@ function createGrid() {
     return Math.abs(x1 - x2) + Math.abs(y1 - y2);
   }
 
-  // Place goal tile far enough from start
   let goalTileIndex;
   do {
     goalTileIndex = Math.floor(Math.random() * totalTiles);
@@ -72,7 +70,6 @@ function createGrid() {
     tile.classList.add('tile');
     tile.dataset.index = i;
 
-    // START TILE
     if (i === startTileIndex) {
       tile.classList.add('start-tile');
       tile.dataset.type = 'start';
@@ -81,26 +78,18 @@ function createGrid() {
       img.src = 'img/water-can.png';
       img.alt = 'Start Tile';
       tile.appendChild(img);
-    }
-
-    // GOAL TILE
-    else if (i === goalTileIndex) {
+    } else if (i === goalTileIndex) {
       tile.classList.add('goal-tile');
       tile.dataset.type = 'goal';
       tile.dataset.rotation = 0;
-      tile.innerText = 'goal'; // Replace with image if desired
-    }
-
-    // REGULAR PIPE TILES
-    else {
+      tile.innerText = 'goal';
+    } else {
       let type;
       do {
         type = tileTypes[Math.floor(Math.random() * tileTypes.length)];
       } while (type === 'cross' && crossTileCount >= maxCrossTiles);
 
-      if (type === 'cross') {
-        crossTileCount++;
-      }
+      if (type === 'cross') crossTileCount++;
 
       tile.dataset.type = type;
       const rotation = [0, 90, 180, 270][Math.floor(Math.random() * 4)];
@@ -108,21 +97,83 @@ function createGrid() {
       tile.style.transform = `rotate(${rotation}deg)`;
     }
 
-    // Add click listener (not for start tile)
     if (i !== startTileIndex) {
       tile.addEventListener('click', () => handleClick(tile, i));
     }
 
     grid.appendChild(tile);
-    console.log(`Tile ${i} init — type: ${tile.dataset.type}, rotation: ${tile.dataset.rotation}`);
+    // 🔍 Debug log of tile types and rotations
+    document.querySelectorAll('.tile').forEach((tile, i) => {
+      console.log(`Tile ${i}: ${tile.dataset.type}, rotation: ${tile.dataset.rotation}`);
+    });
+    
+  }
+}
 
+function testForInstantWin() {
+  const tiles = document.querySelectorAll('.tile');
+  let startIndex = -1;
+  let goalIndex = -1;
+
+  tiles.forEach((tile, i) => {
+    if (tile.classList.contains('start-tile')) startIndex = i;
+    if (tile.classList.contains('goal-tile')) goalIndex = i;
+  });
+
+  if (startIndex === -1 || goalIndex === -1) return true;
+
+  const visited = new Set();
+  const queue = [startIndex];
+
+  const directions = {
+    top: -5, bottom: 5, left: -1, right: 1
+  };
+
+  const isValidNeighbor = (fromIndex, toIndex, direction) => {
+    if (toIndex < 0 || toIndex >= 25) return false;
+    if ((direction === 'left' && fromIndex % 5 === 0) ||
+        (direction === 'right' && fromIndex % 5 === 4)) return false;
+    return true;
+  };
+
+  while (queue.length > 0) {
+    const currentIndex = queue.shift();
+    if (visited.has(currentIndex)) continue;
+    visited.add(currentIndex);
+
+    const currentTile = tiles[currentIndex];
+    const currentType = currentTile.dataset.type;
+    const currentRotation = parseInt(currentTile.dataset.rotation || 0);
+    const connections = getConnections(currentType, currentRotation);
+
+    for (let dir of connections) {
+      const neighborIndex = currentIndex + directions[dir];
+      const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
+
+      if (!isValidNeighbor(currentIndex, neighborIndex, dir)) continue;
+
+      const neighborTile = tiles[neighborIndex];
+      const neighborType = neighborTile.dataset.type;
+      const neighborRotation = parseInt(neighborTile.dataset.rotation || 0);
+      const neighborConnections = getConnections(neighborType, neighborRotation);
+
+      if (neighborConnections.includes(opposite[dir])) {
+        if (neighborIndex === goalIndex) return true;
+        queue.push(neighborIndex);
+      }
+    }
   }
 
-  // Optional: Debug log for all tiles
-  document.querySelectorAll('.tile').forEach((tile, i) => {
-    console.log(`Tile ${i}: ${tile.dataset.type}, rotation: ${tile.dataset.rotation}`);
-  });
-}  
+  return false;
+}
+
+function createGrid() {
+  let hasWinningPath = true;
+  while (hasWinningPath) {
+    generateTiles();
+    hasWinningPath = testForInstantWin();
+  }
+}
 
 function handleClick(tile, index) {
   if (gameOver) return;
@@ -138,8 +189,15 @@ function handleClick(tile, index) {
 
 //update rotations UI
 function updateRotations() {
+  if (gameOver) return;
+
   rotations++;
   rotationsElement.textContent = rotations;
+
+  if (rotations >= 20) {
+    gameOver = true;
+    message.textContent = '❌ You ran out of moves!';
+  }
 }
 
 //score UI definition
@@ -233,18 +291,22 @@ function checkForValidPath() {
         
           path.forEach((index, i) => {
             const tile = tiles[index];
-            tile.classList.add('path'); // Add visual outline
+            tile.classList.add('path'); // Blue outline
           
             setTimeout(() => {
               const currentRotation = parseInt(tile.dataset.rotation || 0);
               tile.style.transform = `rotate(${currentRotation}deg) scale(1.1)`;
               tile.style.transition = 'transform 0.4s ease-out';
           
+              tile.classList.add('win-effect'); // ✨ Trigger CSS animation
+          
               setTimeout(() => {
                 tile.style.transform = `rotate(${currentRotation}deg) scale(1)`;
-              }, 400);
+                tile.classList.remove('win-effect'); // Reset after animation
+              }, 500);
             }, i * 100);
           });
+          
           return;
         }        
       }
