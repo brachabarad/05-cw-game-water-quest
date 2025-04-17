@@ -61,14 +61,8 @@ h2 {
   background-image: url("img/straight-h.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
-.tile[data-type="straight-v"] {
-  background-image: url("img/straight-v.png");
-  background-size: 100% 100%; /* Ensure the image fits the tile size */
-}
-.tile[data-type="curve-tr"] {
-  background-image: url("img/curvetr.jpg");
-  background-size: 100% 100%; /* Ensure the image fits the tile size */
-}
+
+
 .tile[data-type="curve-tl"] {
   background-image: url("img/curvetl.jpg");
   background-size: 100% 100%; /* Ensure the image fits the tile size */

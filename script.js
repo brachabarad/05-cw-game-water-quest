@@ -2,7 +2,7 @@
 const grid = document.getElementById('grid');
 const resetBtn = document.getElementById('resetBtn');
 const message = document.getElementById('message');
-const scoreElement = document.getElementById('score');
+const scoreElement = document.getElementById('ScoreDisplay');
 const rotationsElement = document.getElementById('rotations');
 const moreInfoBtn = document.getElementById('moreInfoBtn');
 const testPathBtn = document.getElementById('testPathBtn');
@@ -15,9 +15,7 @@ let rotations = 0;
 function getConnections(type, rotation) {
   const baseConnections = {
     'straight-h': ['left', 'right'],
-    'straight-v': ['top', 'bottom'],
-    'curve-tl': ['top', 'left'],
-    'curve-tr': ['top', 'right'],
+    'curve-tl': ['bottom', 'left'],
     'cross': ['top', 'right', 'bottom', 'left'],
     'start': ['right', 'bottom'],
     'goal': ['top', 'right', 'bottom', 'left']
@@ -35,14 +33,16 @@ function getConnections(type, rotation) {
   return directions.map(dir => rotateDirection[rotation][dir]);
 }
 
+//createGrid function
 function createGrid() {
   grid.innerHTML = '';
   gameOver = false;
   message.textContent = '';
+  score = 0;
   rotations = 0;
   rotationsElement.textContent = rotations;
 
-  const tileTypes = ['straight-h', 'straight-v', 'curve-tl', 'curve-tr', 'cross'];
+  const tileTypes = ['straight-h', 'curve-tl', 'cross'];
   const totalTiles = 25;
   const startTileIndex = 0;
 
@@ -114,6 +114,8 @@ function createGrid() {
     }
 
     grid.appendChild(tile);
+    console.log(`Tile ${i} init — type: ${tile.dataset.type}, rotation: ${tile.dataset.rotation}`);
+
   }
 
   // Optional: Debug log for all tiles
@@ -134,10 +136,17 @@ function handleClick(tile, index) {
   updateRotations();
 }
 
+//update rotations UI
 function updateRotations() {
   rotations++;
   rotationsElement.textContent = rotations;
 }
+
+//score UI definition
+function updateScoreUI() {
+  scoreElement.textContent = score;
+}
+
 
 // ✅ Path checking logic
 function checkForValidPath() {
@@ -170,6 +179,7 @@ function checkForValidPath() {
     if ((direction === 'left' && fromIndex % 5 === 0) ||
         (direction === 'right' && fromIndex % 5 === 4)) return false;
     return true;
+    
   };
 
   while (queue.length > 0) {
@@ -181,6 +191,7 @@ function checkForValidPath() {
     const currentType = currentTile.dataset.type;
     const currentRotation = parseInt(currentTile.dataset.rotation || 0);
     const connections = getConnections(currentType, currentRotation);
+    console.log(`Checking tile ${currentIndex} (${currentType}) at rotation ${currentRotation} → connects: ${connections}`);
 
     for (let dir of connections) {
       const neighborIndex = currentIndex + directions[dir];
@@ -202,27 +213,40 @@ function checkForValidPath() {
         
         // ✅ WIN CONDITION
         if (neighborIndex === goalIndex) {
-          message.textContent = '✅ Water reached the goal!';
+          // ✅ Calculate score
+          const levelScore = Math.max(100 - rotations, 10); // never go below 10
+          score = levelScore;
+        
+          // ✅ Show score and update UI
+          message.textContent = `✅ Water reached the goal! +${score} pts`;
+          updateScoreUI();
           gameOver = true;
-
+        
           let path = [];
           let pathCursor = currentIndex;
-          // Build the path in reverse order
           while (pathMap.has(pathCursor)) {
             path.unshift(pathCursor);
             pathCursor = pathMap.get(pathCursor);
           }
           path.unshift(startIndex);
           path.push(goalIndex);
-          
-          // Animate each tile in order with a delay
+        
           path.forEach((index, i) => {
+            const tile = tiles[index];
+            tile.classList.add('path'); // Add visual outline
+          
             setTimeout(() => {
-              tiles[index].classList.add('path-animated');
-            }, i * 100); // 100ms delay between tiles
+              const currentRotation = parseInt(tile.dataset.rotation || 0);
+              tile.style.transform = `rotate(${currentRotation}deg) scale(1.1)`;
+              tile.style.transition = 'transform 0.4s ease-out';
+          
+              setTimeout(() => {
+                tile.style.transform = `rotate(${currentRotation}deg) scale(1)`;
+              }, 400);
+            }, i * 100);
           });
           return;
-        }
+        }        
       }
     }
   }
@@ -257,11 +281,6 @@ function checkForValidPath() {
     message.textContent = 'No valid connections from the start tile.';
   }
 }
-
-
-
-
-
 
 // UI Button actions
 moreInfoBtn.addEventListener('click', () => {
