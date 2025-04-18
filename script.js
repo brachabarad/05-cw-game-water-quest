@@ -74,15 +74,25 @@ function generateTiles() {
       tile.classList.add('start-tile');
       tile.dataset.type = 'start';
       tile.dataset.rotation = 0;
+      
       const img = document.createElement('img');
       img.src = 'img/water-can.png';
       img.alt = 'Start Tile';
+      
       tile.appendChild(img);
     } else if (i === goalTileIndex) {
       tile.classList.add('goal-tile');
       tile.dataset.type = 'goal';
       tile.dataset.rotation = 0;
-      tile.innerText = 'goal';
+      
+      const img = document.createElement('img');
+      img.src = 'img/goal_tile.png'; 
+      img.alt = 'Goal Tile';
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+
+      tile.appendChild(img);
     } else {
       let type;
       do {
