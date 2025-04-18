@@ -46,22 +46,7 @@ function generateTiles() {
   const totalTiles = 25;
   const startTileIndex = 0;
 
-  function manhattanDistance(i1, i2) {
-    const x1 = i1 % 5;
-    const y1 = Math.floor(i1 / 5);
-    const x2 = i2 % 5;
-    const y2 = Math.floor(i2 / 5);
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-  }
-
-  let goalTileIndex;
-  do {
-    goalTileIndex = Math.floor(Math.random() * totalTiles);
-  } while (
-    goalTileIndex === startTileIndex ||
-    manhattanDistance(startTileIndex, goalTileIndex) < 4
-  );
-
+  const goalTileIndex = 24; // Lock goal tile at bottom-right corner
   let crossTileCount = 0;
   const maxCrossTiles = 3;
 
