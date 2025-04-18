@@ -356,7 +356,7 @@ function checkForValidPath() {
 
 // UI Button actions
 moreInfoBtn.addEventListener('click', () => {
-  alert('Rotate pipes to create a continuous water path from the start to the goal.');
+  window.open('https://www.charitywater.org/', '_blank');
 });
 
 resetBtn.addEventListener('click', createGrid);

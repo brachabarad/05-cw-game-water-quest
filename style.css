@@ -140,7 +140,7 @@ h2 {
   text-align: center;
   display: flex; /* Use flexbox to align items in a row */
   justify-content: center; /* Center the content horizontally */
-  gap: 30px; /* Add more spacing between score and rotations */
+  gap: 30px; /* Add more spacing between score, level, and rotations */
   padding: 10px; /* Add padding for better appearance */
   background-color: #f9f9f9; /* Light background for contrast */
   border: 2px solid #ccc; /* Add a border for definition */
@@ -151,9 +151,16 @@ h2 {
 #score-area p {
   font-size: 1.4em; /* Slightly larger font for better readability */
   margin: 0; /* Remove vertical margins */
-  display: inline-block; /* Ensure they stay inline */
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically align text and icons */
+  gap: 10px; /* Add spacing between the icon and text */
   color: #003366; /* Use a darker color for better contrast */
   font-weight: bold; /* Make the text bold */
+}
+
+#score-area i {
+  color: #FFC907; /* Use a bright color for the icons */
+  font-size: 1.5em; /* Slightly larger than the text */
 }
 
 /* Button area styling */

@@ -11,6 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Clean Water Game</title>
   <link rel="stylesheet" href="style.css"/>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 <body>
   <img src="img/cw_logo.jpg" alt="Charity:Water Logo" style="display: block; margin: 0 auto; width: 150px; height: auto;"/>
@@ -20,12 +22,11 @@
 
     <!-- Score area -->
     <div id="score-area">
-      <p>Score: <span id="ScoreDisplay">0</span></p>
-      <p>Level: <span id="levelDisplay">1</span></p>
-      <p>Rotations: <span id="rotations">0</span></p>
+      <p><i class="fas fa-star"></i> Score: <span id="ScoreDisplay">0</span></p>
+      <p><i class="fas fa-flag"></i> Level: <span id="levelDisplay">1</span></p>
+      <p><i class="fas fa-sync-alt"></i> Rotations: <span id="rotations">0</span></p>
     </div>
     <button id="testPathBtn">Test Path</button>
-
 
     <!-- Message area for win/loss feedback -->
     <div id="message"></div>
