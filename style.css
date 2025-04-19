@@ -58,23 +58,20 @@ h2 {
 
 /* Define tile types */
 .tile[data-type="straight-h"] {
-  background-image: url("img/straight-h.png");
+  background-image: url("img/straight-hh.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
-
-
-.tile[data-type="curve-tl"] {
-  background-image: url("img/curvetl.jpg");
+.tile[data-type="curve"] {
+  background-image: url("img/curve.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
 .tile[data-type="cross"] {
   background-image: url("img/cross.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
-
-/* Winning tile */
-.tile.winner {
-  background-color: #ffc908;
+.tile[data-type="ttile"] {
+  background-image: url("img/ttile.png");
+  background-size: 100% 100%; /* Ensure the image fits the tile size */
 }
 
 /* Start tile style */
@@ -84,7 +81,7 @@ h2 {
   justify-content: center;
   align-items: center;
   overflow: hidden; /* Ensure the image doesn't overflow */
-  background-color: transparent; /* So image shows through */
+  background-color: #ffffff;
   pointer-events: none; /* Disable clicking */
 }
 
@@ -114,6 +111,16 @@ h2 {
   display: block; /* Remove any inline spacing issues */
 }
 
+/*test path button*/
+#testPathBtn {
+  padding: 10px 20px;
+  font-weight: bold;
+  background-color: #bf6b45;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
 /* Message area */
 #message {
@@ -199,23 +206,8 @@ h2 {
   text-align: center;
 }
 
-#button-area button {
-  padding: 10px 20px;
-  font-weight: bold;
-  background-color: #003366;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0 10px; /* Add spacing between buttons */
-}
-
-#button-area button:hover {
-  background-color: #00509e; /* Add hover effect */
-}
-
 .tile.path {
-  outline: 3px solid #2E9DF7;
+  outline: 2px solid #2E9DF7;
   box-shadow: 0 0 8px #2E9DF7;
 }
 
@@ -250,7 +242,38 @@ h2 {
   }
 }
 
-.tile.win-effect {
+.win-effect {
   animation: winPulse 0.5s ease-in-out;
+}
+
+/* Confetti dots for goal tile */
+.confetti-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  animation: confettiFall 1.5s se-out forwards;
+  opacity: 0.8;
+}
+
+
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(30px) scale(0.9);
+    opacity: 0;
+  }
 }
 

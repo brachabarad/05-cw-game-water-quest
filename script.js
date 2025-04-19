@@ -15,8 +15,9 @@ let rotations = 0;
 function getConnections(type, rotation) {
   const baseConnections = {
     'straight-h': ['left', 'right'],
-    'curve-tl': ['bottom', 'left'],
+    'curve': ['bottom', 'left'],
     'cross': ['top', 'right', 'bottom', 'left'],
+    'ttile': ['top', 'bottom', 'right'],
     'start': ['right', 'bottom'],
     'goal': ['top', 'right', 'bottom', 'left']
 
@@ -42,7 +43,7 @@ function generateTiles() {
   rotations = 0;
   rotationsElement.textContent = rotations;
 
-  const tileTypes = ['straight-h', 'curve-tl', 'cross'];
+  const tileTypes = ['straight-h', 'curve', 'ttile', 'cross'];
   const totalTiles = 25;
   const startTileIndex = 0;
 
@@ -272,6 +273,38 @@ function checkForValidPath() {
         
           // ✅ Show score and update UI
           message.textContent = `✅ Water reached the goal! +${score} pts`;
+          
+          // 🎯 Get the goal tile first
+          const goalTile = tiles[goalIndex];
+          
+        // 🧹 Remove old confetti
+          const existingConfetti = goalTile.querySelector('.confetti-container');
+          if (existingConfetti) {
+            existingConfetti.remove();
+
+            // ✅ Force a browser reflow (clears animation memory)
+            void goalTile.offsetWidth;
+          }
+           // 🎯 Add confetti to goal tile           
+          // 🎉 Confetti on goal tile
+          const confettiContainer = document.createElement('div');
+          confettiContainer.classList.add('confetti-container');
+          goalTile.appendChild(confettiContainer);
+
+          for (let i = 0; i < 20; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('confetti-dot');
+            dot.style.backgroundColor = ['#FFC907', '#2E9DF7', '#FF902A', '#4FCB53'][i % 4]; // Brand colors
+            dot.style.left = `${Math.random() * 90 + 5}%`;
+            dot.style.top = `${Math.random() * 40 + 10}%`;
+            confettiContainer.appendChild(dot);
+          }
+
+          // Remove confetti after 2 seconds
+          setTimeout(() => {
+            confettiContainer.remove();
+          }, 4000);
+
           updateScoreUI();
           gameOver = true;
         
