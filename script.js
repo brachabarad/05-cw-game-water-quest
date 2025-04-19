@@ -283,13 +283,12 @@ function checkForValidPath() {
             existingConfetti.remove();
 
             // ✅ Force a browser reflow (clears animation memory)
-            void goalTile.offsetWidth;
+            void goalTile.offsetHeight;
           }
-           // 🎯 Add confetti to goal tile           
-          // 🎉 Confetti on goal tile
+          // 🎉 Confetti on screen
           const confettiContainer = document.createElement('div');
           confettiContainer.classList.add('confetti-container');
-          goalTile.appendChild(confettiContainer);
+          document.body.appendChild(confettiContainer);
 
           for (let i = 0; i < 20; i++) {
             const dot = document.createElement('div');
@@ -297,7 +296,9 @@ function checkForValidPath() {
             dot.style.backgroundColor = ['#FFC907', '#2E9DF7', '#FF902A', '#4FCB53'][i % 4]; // Brand colors
             dot.style.left = `${Math.random() * 90 + 5}%`;
             dot.style.top = `${Math.random() * 40 + 10}%`;
+            dot.style.animation = `fall 1s ease-out forwards`;
             confettiContainer.appendChild(dot);
+            console.log('✨ Confetti dot created at:', dot.style.left, dot.style.top);
           }
 
           // Remove confetti after 2 seconds
