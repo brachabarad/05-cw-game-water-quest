@@ -12,9 +12,6 @@ Secondary Colors:
 - Dark Green: #159A48
 - Pink:       #F16061
 
-*/
-
-/* Global Styles */
 /* Global styling for body */
 body {
   font-family: Arial, sans-serif;
@@ -36,7 +33,7 @@ h2 {
 #grid {
   display: grid;
   grid-template-columns: repeat(5, 80px); /* 5 columns */
-  grid-gap: 10px;
+  gap: 0px;
   justify-content: center;
   margin: 20px auto;
   padding: 10px; /* Optional: Add padding for better appearance */
@@ -45,8 +42,7 @@ h2 {
 
 /* Base tile style */
 .tile {
-  width: 60px;
-  height: 60px;
+  aspect-ratio: 1 / 1;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -210,7 +206,7 @@ h2 {
 }
 
 .tile.path {
-  outline: 2px solid #2E9DF7;
+  outline: 3px solid #2E9DF7;
   box-shadow: 0 0 8px #2E9DF7;
 }
 
