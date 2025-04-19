@@ -296,7 +296,7 @@ function checkForValidPath() {
             dot.style.backgroundColor = ['#FFC907', '#2E9DF7', '#FF902A', '#4FCB53'][i % 4]; // Brand colors
             dot.style.left = `${Math.random() * 90 + 5}%`;
             dot.style.top = `${Math.random() * 40 + 10}%`;
-            dot.style.animation = `fall 1s ease-out forwards`;
+            dot.style.animation = `fall ${2 + Math.random()}s ease-out forwards`;
             confettiContainer.appendChild(dot);
             console.log('✨ Confetti dot created at:', dot.style.left, dot.style.top);
           }
