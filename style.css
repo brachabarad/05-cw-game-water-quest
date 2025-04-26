@@ -34,24 +34,25 @@ h2 {
 /* Grid container with 5x5 layout */
 #grid {
   display: grid;
-  grid-template-columns: repeat(5, 80px); /* 5 columns */
-  width: 100%; /* Full width */
+  grid-template-columns: repeat(5, 1fr); /* Make columns flexible */
   gap: 0px;
   justify-content: center;
+  width: 90%; /* Not full 100% */
+  max-width: 450px; /* So it doesn't stretch too much on big screens */
   margin: 20px auto;
-  padding: 10px; /* Optional: Add padding for better appearance */
-  border-radius: 5px; /* Optional: Add rounded corners */
+  padding: 10px;
+  border-radius: 5px;
 }
 
-/* Base tile style */
 .tile {
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Keep tiles square */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   border: 1px solid #ccc;
   transition: transform 0.3s ease;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 /* Define tile types */
@@ -151,6 +152,8 @@ h2 {
   margin-bottom: 20px;
   text-align: center;
   display: flex; /* Use flexbox to align items in a row */
+  flex-wrap: wrap; /* Allow it to wrap on small screens */
+  align-items: center; /* Vertically align items */
   justify-content: center; /* Center the content horizontally */
   gap: 30px; /* Add more spacing between score, level, and rotations */
   padding: 10px; /* Add padding for better appearance */
@@ -180,6 +183,8 @@ h2 {
   margin-top: 20px;
   text-align: center;
   display: flex; /* Use flexbox for better alignment */
+  flex-wrap: wrap; /* Allow wrapping */
+  align-items: center; /* Vertically align items */
   justify-content: center; /* Center the buttons horizontally */
   gap: 15px; /* Add spacing between buttons */
 }
@@ -334,3 +339,13 @@ h2 {
   display: none;
 }
 
+body {
+  padding: 20px;
+}
+
+@media (max-width: 600px) {
+  #grid {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 350px;
+  }
+}
