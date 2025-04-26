@@ -11,7 +11,7 @@ let gameOver = false;
 let score = 0;
 let rotations = 0;
 let maxRotations = 20; // default for Normal mode
-
+let level = 1;
 
 // Direction mapping
 function getConnections(type, rotation) {
@@ -157,6 +157,16 @@ function testForInstantWin() {
 
   return false;
 }
+
+// 🆕 Level display
+function updateLevelUI() {
+  const levelDisplay = document.getElementById('levelDisplay');
+  if (levelDisplay) {
+    levelDisplay.textContent = level;
+  }
+}
+
+// 🆕 Create a grid of tiles
 function createGrid(resetScore = true) {
   const difficulty = document.getElementById('difficulty').value;
   if (difficulty === 'easy') {
@@ -168,10 +178,13 @@ function createGrid(resetScore = true) {
   }
 
   if (resetScore) {
-    score = 0; // Only reset score if starting a brand new game
+    score = 0;      // Reset score if new game
+    level = 1;      // 🆕 Reset level if new game
   }
+  
   rotations = 0;
-  updateScoreUI();
+  updateScoreUI();   // Update score display
+  updateLevelUI();   // 🆕 Update level display
   rotationsElement.textContent = maxRotations;
   grid.innerHTML = '';
   gameOver = false;
@@ -426,7 +439,8 @@ resetBtn.addEventListener('click', () => {
 // When "Keep Playing" is clicked → hide popup, start new level
 keepPlayingBtn.addEventListener('click', () => {
   popup.classList.add('hidden');
-  createGrid(false); // ❗ Do NOT reset score
+  level++; // 🆕 Move to next level
+  createGrid(false); // Keep the current score
 });
 
 // When "Learn More" is clicked → open Charity:Water site
