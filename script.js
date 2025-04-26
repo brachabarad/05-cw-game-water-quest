@@ -10,6 +10,8 @@ const testPathBtn = document.getElementById('testPathBtn');
 let gameOver = false;
 let score = 0;
 let rotations = 0;
+let maxRotations = 20; // default for Normal mode
+
 
 // Direction mapping
 function getConnections(type, rotation) {
@@ -36,13 +38,6 @@ function getConnections(type, rotation) {
 
 // Generate the tile grid
 function generateTiles() {
-  grid.innerHTML = '';
-  gameOver = false;
-  message.textContent = '';
-  score = 0;
-  rotations = 0;
-  rotationsElement.textContent = rotations;
-
   const tileTypes = ['straight-h', 'curve', 'ttile', 'cross'];
   const totalTiles = 25;
   const startTileIndex = 0;
@@ -162,8 +157,26 @@ function testForInstantWin() {
 
   return false;
 }
+function createGrid(resetScore = true) {
+  const difficulty = document.getElementById('difficulty').value;
+  if (difficulty === 'easy') {
+    maxRotations = 30;
+  } else if (difficulty === 'normal') {
+    maxRotations = 20;
+  } else if (difficulty === 'hard') {
+    maxRotations = 15;
+  }
 
-function createGrid() {
+  if (resetScore) {
+    score = 0; // Only reset score if starting a brand new game
+  }
+  rotations = 0;
+  updateScoreUI();
+  rotationsElement.textContent = maxRotations;
+  grid.innerHTML = '';
+  gameOver = false;
+  message.textContent = '';
+
   let hasWinningPath = true;
   while (hasWinningPath) {
     generateTiles();
@@ -188,13 +201,15 @@ function updateRotations() {
   if (gameOver) return;
 
   rotations++;
-  rotationsElement.textContent = rotations;
+  const rotationsLeft = maxRotations - rotations;
+  rotationsElement.textContent = rotationsLeft;
 
-  if (rotations >= 20) {
+  if (rotations >= maxRotations) {
     gameOver = true;
     message.textContent = '❌ You ran out of moves!';
   }
 }
+
 
 //score UI definition
 function updateScoreUI() {
@@ -263,17 +278,32 @@ function checkForValidPath() {
           queue.push(neighborIndex);
           pathMap.set(neighborIndex, currentIndex); // track the path
         }
-
         
         // ✅ WIN CONDITION
         if (neighborIndex === goalIndex) {
           // ✅ Calculate score
-          const levelScore = Math.max(100 - rotations, 10); // never go below 10
-          score = levelScore;
-        
-          // ✅ Show score and update UI
-          message.textContent = `✅ Water reached the goal! +${score} pts`;
-          
+          // Get selected difficulty
+          const difficulty = document.getElementById('difficulty').value;
+
+          // Set multiplier based on difficulty
+          let difficultyMultiplier = 1;
+          if (difficulty === 'easy') difficultyMultiplier = 0.5;
+          else if (difficulty === 'normal') difficultyMultiplier = 1;
+          else if (difficulty === 'hard') difficultyMultiplier = 1.5;
+
+          // Calculate base score
+          const baseScore = Math.max(100 - rotations, 10);
+
+          // Apply multiplier
+          const levelScore = Math.floor(baseScore * difficultyMultiplier);
+
+          // Update the total score
+          score += levelScore;
+
+          // Update UI
+          message.textContent = `✅ Water reached the goal! +${levelScore} pts`;
+          updateScoreUI();
+      
           // 🎯 Get the goal tile first
           const goalTile = tiles[goalIndex];
           
@@ -301,13 +331,14 @@ function checkForValidPath() {
             console.log('✨ Confetti dot created at:', dot.style.left, dot.style.top);
           }
 
-          // Remove confetti after 2 seconds
+          // Remove confetti after 3 seconds
           setTimeout(() => {
             confettiContainer.remove();
-          }, 4000);
+          }, 6000);
 
           updateScoreUI();
           gameOver = true;
+          showPopup(); // 🆕 Show popup after victory
         
           let path = [];
           let pathCursor = currentIndex;
@@ -373,15 +404,46 @@ function checkForValidPath() {
   }
 }
 
+// 🆕 Add event listeners to the buttons
+//When player changes difficulty dropdown:
+const difficultySelect = document.getElementById('difficulty');
+difficultySelect.addEventListener('change', createGrid);
+
+const popup = document.getElementById('popup');
+const keepPlayingBtn = document.getElementById('keepPlayingBtn');
+const moreInfoPopupBtn = document.getElementById('moreInfoPopupBtn');
+
+// When player wins → show popup
+function showPopup() {
+  popup.classList.remove('hidden');
+}
+
+// When player clicks "start game" button→ Full reset
+resetBtn.addEventListener('click', () => {
+  createGrid(true); // Full reset
+});
+
+// When "Keep Playing" is clicked → hide popup, start new level
+keepPlayingBtn.addEventListener('click', () => {
+  popup.classList.add('hidden');
+  createGrid(false); // ❗ Do NOT reset score
+});
+
+// When "Learn More" is clicked → open Charity:Water site
+moreInfoPopupBtn.addEventListener('click', () => {
+  window.open('https://www.charitywater.org/', '_blank');
+});
+
 // UI Button actions
 moreInfoBtn.addEventListener('click', () => {
   window.open('https://www.charitywater.org/', '_blank');
 });
 
-resetBtn.addEventListener('click', createGrid);
 
 testPathBtn.addEventListener('click', () => {
   checkForValidPath();
 });
 // Start the game
 createGrid();
+
+

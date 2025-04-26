@@ -14,9 +14,11 @@ Secondary Colors:
 
 /* Global styling for body */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Open Sans', Arial, sans-serif;
   text-align: center;
   padding: 30px;
+  margin: 0;
+  box-sizing: border-box;
   background-color: #fffaf0;
 }
 
@@ -33,6 +35,7 @@ h2 {
 #grid {
   display: grid;
   grid-template-columns: repeat(5, 80px); /* 5 columns */
+  width: 100%; /* Full width */
   gap: 0px;
   justify-content: center;
   margin: 20px auto;
@@ -48,26 +51,29 @@ h2 {
   background-position: center;
   border: 1px solid #ccc;
   transition: transform 0.3s ease;
-  
+  box-sizing: border-box; 
 }
-
 
 /* Define tile types */
 .tile[data-type="straight-h"] {
   background-image: url("img/straight-hh.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
+  object-fit: cover; /* Scale the image properly */
 }
 .tile[data-type="curve"] {
   background-image: url("img/curve.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
+  object-fit: cover; /* Scale the image properly */
 }
 .tile[data-type="cross"] {
   background-image: url("img/cross.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
+  
 }
 .tile[data-type="ttile"] {
   background-image: url("img/ttile.png");
   background-size: 100% 100%; /* Ensure the image fits the tile size */
+  object-fit: cover; /* Scale the image properly */
 }
 
 /* Start tile style */
@@ -271,5 +277,60 @@ h2 {
   100% { transform: translateY(80vh) scale(0.6); opacity: 0; }
 }
 
+/*difficulty selector area*/
+#difficultyselect {
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-weight: bold;
+  background-color: #bf6b45;
+  color: #ffffff;
+  text-align: center;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center the content horizontally */
+  gap: 20px; /* Add spacing between difficulty buttons */
+}
 
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  color: #2E9DF7;
+}
+
+.popup-content button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-weight: bold;
+  background-color: #FFC907;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background-color: #ffb700;
+}
+
+.hidden {
+  display: none;
+}
 

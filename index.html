@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="style.css"/>
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <img src="img/cw_logo.jpg" alt="Charity:Water Logo" style="display: block; margin: 0 auto; width: 150px; height: auto;"/>
@@ -21,7 +22,7 @@
     <h2>Help clean water reach the village!</h2>
     <!-- Difficulty selection dropdown -->
     <div id="difficultyselect">
-      <label for="DifficultySelect">Select Difficulty:</label>
+      <label for="difficulty">Select Difficulty:</label>
       <select id="difficulty">
         <option value="easy">Easy</option>
         <option value="normal" selected>Normal</option>
@@ -46,7 +47,17 @@
     <div id="button-area">
       <button id="resetBtn">Start Game</button>
       <button id="moreInfoBtn">More Info</button>
+      <button id="donateBtn">Donate</button>
     </div>
+    <div id="popup" class="popup hidden">
+      <div class="popup-content">
+        <h2>Good job!</h2>
+        <p>You brought clean water to the village!</p>
+        <button id="keepPlayingBtn">Keep Playing</button>
+        <button id="moreInfoPopupBtn">Learn More About Charity: Water</button>
+      </div>
+    </div>
+    
   </main>
 
   <script src="script.js"></script>
